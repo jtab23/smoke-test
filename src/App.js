@@ -11,7 +11,7 @@ const navigation = [
 
 const stats = [
   { id: 1, name: 'Rent payments processed monthly', value: '£44 million' },
-  { id: 2, name: 'Tenants using FlexMyRent', value: '119,000+' },
+  { id: 2, name: 'Tenants using FlexRent', value: '119,000+' },
   { id: 3, name: 'New users annually', value: '46,000' },
 ];
 
@@ -176,14 +176,14 @@ function App() {
         <nav className="flex items-center justify-between p-6 lg:px-8" aria-label="Global">
           <div className="flex items-center lg:flex-1">
             <a href="#" className="-m-1.5 p-1.5 flex items-center">
-              <span className="sr-only">FlexMyRent</span>
+              <span className="sr-only">FlexYourRent</span>
               <img
                 className="h-8 w-auto"
                 src="https://tailwindui.com/img/logos/mark.svg?color=green&shade=500"
                 alt="FlexMyRent Logo"
               />
               
-              <span className="ml-2 text-xl font-bold text-white">FlexMyRent</span>
+              <span className="ml-2 text-xl font-bold text-white">FlexYourRent</span>
 
             </a>
           </div>
@@ -213,13 +213,13 @@ function App() {
           <Dialog.Panel className="fixed inset-y-0 right-0 z-50 w-full overflow-y-auto bg-white px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10">
             <div className="flex items-center justify-between">
               <a href="#" className="-m-1.5 p-1.5 flex items-center">
-                <span className="sr-only">FlexMyRent</span>
+                <span className="sr-only">FlexYourRent</span>
                 <img
                   className="h-8 w-auto"
                   src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
                   alt="FlexMyRent Logo"
                 />
-                <span className="ml-2 text-xl font-bold text-gray-900">FlexMyRent</span>
+                <span className="ml-2 text-xl font-bold text-gray-900">FlexYourRent</span>
               </a>
               <button
                 type="button"
@@ -432,7 +432,7 @@ function App() {
       </div>
       <div className="mt-8 md:order-1 md:mt-0">
         <p className="text-center text-xs leading-5 text-green-500">
-          &copy; 2024 FlexMyRent, Inc. All rights reserved.
+          &copy; 2024 FlexYourRent, Inc. All rights reserved.
         </p>
       </div>
     </div>
