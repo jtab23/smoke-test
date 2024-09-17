@@ -1,6 +1,6 @@
 {
   "name": "smoke-test-app",
-  "homepage": "https://flexyourrent.com",
+  "homepage": "flexyourrent.com",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
