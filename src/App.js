@@ -207,8 +207,11 @@ function App() {
             {navigation.map((item) => (
               <button
                 key={item.name}
-                onClick={handleNavigationClick}
-                className="text-sm font-semibold leading-6 text-white hover:text-gray-300"
+                onClick={() => {
+                  setMobileMenuOpen(false);
+                  handleNavigationClick();
+                }}
+                                className="text-sm font-semibold leading-6 text-white hover:text-gray-300"
               >
                 {item.name}
               </button>
