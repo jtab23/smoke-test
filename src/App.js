@@ -249,7 +249,10 @@ function App() {
                   {navigation.map((item) => (
                     <button
                       key={item.name}
-                      onClick={handleNavigationClick}
+                      onClick={() => {
+                        handleNavigationClick();
+                        setMobileMenuOpen(false);
+                      }}
                       className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
                     >
                       {item.name}
@@ -423,7 +426,7 @@ function App() {
     </div>
   </div>
 </Dialog>
-      <Dialog open={comingSoonOpen} onClose={() => setComingSoonOpen(false)} className="relative z-10">
+      <Dialog open={comingSoonOpen} onClose={() => setComingSoonOpen(false)} className="relative z-100">
   <div className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true" />
   <div className="fixed inset-0 z-10 overflow-y-auto">
     <div className="flex items-center justify-center min-h-full p-4 text-center sm:p-0">
