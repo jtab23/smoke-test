@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Dialog } from '@headlessui/react';
 import { motion } from 'framer-motion';  // Import Framer Motion
 import { Bars3Icon, CheckIcon, XMarkIcon } from '@heroicons/react/24/outline';
+import { BellIcon } from '@heroicons/react/24/outline';
 
 const navigation = [
   { name: 'For Tenants', href: '#tenants' },
@@ -95,6 +96,11 @@ function App() {
   const [featureInterest, setFeatureInterest] = useState([]); // Multi-select for feature interest
   const [ageRange, setAgeRange] = useState(''); // Age range selection
   const [additionalFeedback, setAdditionalFeedback] = useState(''); // Additional feedback input
+  const [comingSoonOpen, setComingSoonOpen] = useState(false); // State to control "Coming Soon" modal
+
+  const handleNavigationClick = () => {
+    setComingSoonOpen(true); // Open the "Coming Soon" modal
+  };
 
   // Handles form submission for the email waitlist
   const handleEmailSubmit = async (e) => {
@@ -199,9 +205,13 @@ function App() {
           </div>
           <div className="hidden lg:flex lg:gap-x-12 lg:justify-center lg:flex-1">
             {navigation.map((item) => (
-              <a key={item.name} href={item.href} className="text-sm font-semibold leading-6 text-white hover:text-gray-300">
+              <button
+                key={item.name}
+                onClick={handleNavigationClick}
+                className="text-sm font-semibold leading-6 text-white hover:text-gray-300"
+              >
                 {item.name}
-              </a>
+              </button>
             ))}
           </div>
           <div className="hidden lg:flex lg:flex-1 lg:justify-end">
@@ -274,7 +284,7 @@ function App() {
                     Flex
                   </span>
                 </motion.span>
-                ible Rent Payments for a <span className="italic underline decoration-green-500 decoration-5">fairer</span> Future
+                ible Rent Payments for a <span className="italic underline decoration-green-500 decoration-5">Fairer</span> Future
               </h1>
   <p className="mt-6 text-lg leading-8 text-gray-200 max-w-2xl mx-auto">
     <span className="text-white font-semibold">FlexMyRent</span> is designed for tenants who need 
@@ -316,101 +326,124 @@ function App() {
       </form>
       {/* Modal for secondary form (optional feedback) */}
       <Dialog open={open} onClose={() => setOpen(false)} className="relative z-10">
-        <div className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true" />
+  <div className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true" />
 
-        <div className="fixed inset-0 z-10 overflow-y-auto">
-    <div className="flex items-center justify-center min-h-full p-4 text-center sm:p-0">
-      <div className="relative bg-white rounded-lg px-4 pt-5 pb-4 shadow-xl sm:w-full sm:max-w-sm sm:p-6">
-        {/* Centering Check Icon and Text */}
+  <div className="fixed inset-0 z-10 overflow-y-auto flex items-center justify-center">
+    <div className="flex items-center justify-center min-h-full p-4">
+      <div className="relative bg-white rounded-lg px-8 pt-6 pb-8 shadow-2xl sm:w-full sm:max-w-md">
+        {/* Centering Icon and Text */}
         <div className="flex flex-col items-center">
-          <div className="flex h-12 w-12 mb-4 items-center justify-center rounded-full bg-green-100">
-            <CheckIcon className="h-6 w-6 text-green-600" aria-hidden="true" />
+          <div className="flex h-12 w-12 mb-4 items-center justify-center rounded-full bg-yellow-100">
+            <BellIcon className="h-6 w-6 text-yellow-600" aria-hidden="true" />
           </div>
-                          <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
-                  <Dialog.Title as="h3" className="text-lg leading-6 font-medium text-gray-900">
-                    We’d love to know more!
-                  </Dialog.Title>
-                  <div className="mt-2">
-                    {/* Secondary form inside modal */}
-                    <form onSubmit={handleModalSubmit}>
-                      <div className="mb-4">
-                        <label className="block text-sm font-medium text-gray-700">Which features are you most interested in?</label>
-                        <div className="mt-2 flex flex-col space-y-2">
-                          <label>
-                            <input
-                              type="checkbox"
-                              value="Flexible payments"
-                              checked={featureInterest.includes('Flexible payments')}
-                              onChange={() => toggleFeatureInterest('Flexible payments')}
-                            />{' '}
-                            Flexible payments
-                          </label>
-                          <label>
-                            <input
-                              type="checkbox"
-                              value="Credit building"
-                              checked={featureInterest.includes('Credit building')}
-                              onChange={() => toggleFeatureInterest('Credit building')}
-                            />{' '}
-                            Credit building
-                          </label>
-                          <label>
-                            <input
-                              type="checkbox"
-                              value="Rewards for paying rent"
-                              checked={featureInterest.includes('Rewards for paying rent')}
-                              onChange={() => toggleFeatureInterest('Rewards for paying rent')}
-                            />{' '}
-                            Rewards for paying rent
-                          </label>
-                        </div>
-                      </div>
+          <Dialog.Title as="h3" className="text-lg font-semibold text-gray-900">
+            We’d love to know more!
+          </Dialog.Title>
 
-                      <div className="mb-4">
-                        <label className="block text-sm font-medium text-gray-700">How old are you?</label>
-                        <select
-                          className="mt-2 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-green focus:border-green-500 sm:text-sm"
-                          value={ageRange}
-                          onChange={(e) => setAgeRange(e.target.value)}
-                          required
-                        >
-                          <option value="" disabled>
-                            Select your age range
-                          </option>
-                          <option value="18-24">18-24</option>
-                          <option value="25-34">25-34</option>
-                          <option value="35-44">35-44</option>
-                          <option value="45-54">45-54</option>
-                          <option value="55+">55+</option>
-                        </select>
-                      </div>
-
-                      <div className="mb-4">
-                        <label className="block text-sm font-medium text-gray-700">What else would you like us to do?</label>
-                        <textarea
-                          className="mt-2 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-green focus:border-green-500 sm:text-sm"
-                          rows="3"
-                          value={additionalFeedback}
-                          onChange={(e) => setAdditionalFeedback(e.target.value)}
-                          
-                        ></textarea>
-                      </div>
-
-                      <button
-                        type="submit"
-                        disabled={isModalSubmitting}
-                        className="inline-flex w-full justify-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-                      >
-                      {isModalSubmitting ? 'Submitting...' : 'Submit'}
-                      </button>
-                    </form>
-                  </div>
+          <div className="mt-4 w-full">
+            {/* Secondary form inside modal */}
+            <form onSubmit={handleModalSubmit}>
+              <div className="mb-6">
+                <label className="block text-sm font-medium text-gray-700 mb-2">Which features are you most interested in?</label>
+                <div className="mt-2 flex flex-col space-y-3">
+                  <label className="flex items-center space-x-2">
+                    <input
+                      type="checkbox"
+                      value="Flexible payments"
+                      checked={featureInterest.includes('Flexible payments')}
+                      onChange={() => toggleFeatureInterest('Flexible payments')}
+                      className="rounded-full text-green-600 focus:ring-green-500"
+                    />
+                    <span>Flexible payments 💸</span>
+                  </label>
+                  <label className="flex items-center space-x-2">
+                    <input
+                      type="checkbox"
+                      value="Credit building"
+                      checked={featureInterest.includes('Credit building')}
+                      onChange={() => toggleFeatureInterest('Credit building')}
+                      className="rounded-full text-green-600 focus:ring-green-500"
+                    />
+                    <span>Credit building 📈</span>
+                  </label>
+                  <label className="flex items-center space-x-2">
+                    <input
+                      type="checkbox"
+                      value="Rewards for paying rent"
+                      checked={featureInterest.includes('Rewards for paying rent')}
+                      onChange={() => toggleFeatureInterest('Rewards for paying rent')}
+                      className="rounded-full text-green-600 focus:ring-green-500"
+                    />
+                    <span>Rewards for paying rent 🎁</span>
+                  </label>
                 </div>
               </div>
-            </div>
+
+              <div className="mb-6">
+                <label className="block text-sm font-medium text-gray-700 mb-2">How old are you?</label>
+                <select
+                  className="block w-full border border-gray-300 rounded-xl shadow-sm px-4 py-3 focus:ring-green-500 focus:border-green-500 sm:text-sm"
+                  value={ageRange}
+                  onChange={(e) => setAgeRange(e.target.value)}
+                  required
+                >
+                  <option value="" disabled>Select your age range</option>
+                  <option value="18-24">18-24</option>
+                  <option value="25-34">25-34</option>
+                  <option value="35-44">35-44</option>
+                  <option value="45-54">45-54</option>
+                  <option value="55+">55+</option>
+                </select>
+              </div>
+
+              <div className="mb-6">
+                <label className="block text-sm font-medium text-gray-700 mb-2">What else would you like us to do?</label>
+                <textarea
+                  className="block w-full border border-gray-300 rounded-xl shadow-sm px-4 py-3 focus:ring-green-500 focus:border-green-500 sm:text-sm"
+                  rows="3"
+                  value={additionalFeedback}
+                  onChange={(e) => setAdditionalFeedback(e.target.value)}
+                />
+              </div>
+
+              <button
+                type="submit"
+                disabled={isModalSubmitting}
+                className="inline-flex w-full justify-center rounded-full bg-indigo-600 px-6 py-3 text-sm font-semibold text-white shadow-lg hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-all"
+              >
+                {isModalSubmitting ? 'Submitting...' : 'Submit'}
+              </button>
+            </form>
           </div>
         </div>
-      </Dialog>                 </div>
+      </div>
+    </div>
+  </div>
+</Dialog>
+      <Dialog open={comingSoonOpen} onClose={() => setComingSoonOpen(false)} className="relative z-10">
+  <div className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true" />
+  <div className="fixed inset-0 z-10 overflow-y-auto">
+    <div className="flex items-center justify-center min-h-full p-4 text-center sm:p-0">
+      <div className="relative bg-white rounded-lg px-4 pt-5 pb-4 shadow-xl sm:w-full sm:max-w-sm sm:p-6">
+        <div className="flex flex-col items-center">
+          <div className="flex h-12 w-12 mb-4 items-center justify-center rounded-full bg-yellow-100">
+          <BellIcon className="h-6 w-6 text-white-600" aria-hidden="true" />
+          </div>
+          <h3 className="text-lg leading-6 font-medium text-gray-900">Coming Soon</h3>
+          <p className="mt-2 text-sm text-gray-500">
+            Sign up to the waitlist to get notified when this feature is available.
+          </p>
+          <button
+            onClick={() => setComingSoonOpen(false)} // Close the modal
+            className="mt-4 inline-flex justify-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500"
+          >
+            Close
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</Dialog>              </div>
 </div>
 
           </div>
@@ -422,14 +455,6 @@ function App() {
   {/* Footer */}
   <footer className="mt-auto">
     <div className="mx-auto max-w-7xl px-6 py-12 md:flex md:items-center md:justify-between lg:px-8">
-      <div className="flex justify-center space-x-6 md:order-2">
-        {footerNavigation.map((item) => (
-          <a key={item.name} href={item.href} className="text-green-400 hover:text-gray-500">
-            <span className="sr-only">{item.name}</span>
-            <item.icon aria-hidden="true" className="h-6 w-6" />
-          </a>
-        ))}
-      </div>
       <div className="mt-8 md:order-1 md:mt-0">
         <p className="text-center text-xs leading-5 text-green-500">
           &copy; 2024 FlexYourRent, Inc. All rights reserved.
