@@ -229,7 +229,7 @@ function App() {
                 <span className="sr-only">FlexYourRent</span>
                 <img
                   className="h-8 w-auto"
-                  src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
+                  src="https://tailwindui.com/img/logos/mark.svg?color=green&shade=600"
                   alt="FlexMyRent Logo"
                 />
                 <span className="ml-2 text-xl font-bold text-gray-900">FlexYourRent</span>
