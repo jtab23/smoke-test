@@ -119,6 +119,12 @@ function App() {
       if (response.ok) {
         setOpen(true); // Open modal after email submission
         setEmail(''); // Clear the email input
+              
+      // Fire Facebook Pixel CompleteRegistration event
+      if (window.fbq) {
+        window.fbq('track', 'CompleteRegistration');
+      }
+      
       } else {
         alert('Something went wrong. Please try again.');
       }
