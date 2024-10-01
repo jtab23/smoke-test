@@ -3,6 +3,7 @@ import { Dialog } from '@headlessui/react';
 import { motion } from 'framer-motion';  // Import Framer Motion
 import { Bars3Icon, XMarkIcon, BellIcon, CreditCardIcon, CheckCircleIcon } from '@heroicons/react/24/outline';
 import mixpanel from 'mixpanel-browser';
+import Cleave from 'cleave.js/react';
 
 // Initialize at the top of your App component
 mixpanel.init('916a00bfb00cc67fb3c3dfd36162813d', {debug: false}); // Set debug to false in production
@@ -141,10 +142,7 @@ function App() {
     e.preventDefault();
     setPaymentStatus('loading');
   
-    mixpanel.track('Payment Attempted', {
-      cardNumber: cardNumber.slice(-4), // Only track last 4 digits for security
-      expiryDate: expiryDate
-    });
+    mixpanel.track('Payment Attempted');
   
     try {
       // Simulate loading
@@ -163,8 +161,6 @@ function App() {
         },
         body: JSON.stringify({
           message: 'Payment Attempted',
-          cardNumberLastFour: cardNumber.slice(-4),
-          expiryDate: expiryDate,
           status: 'Simulated Error'
         }),
       });
@@ -375,105 +371,105 @@ function App() {
       </form>
 
             {/* Payment Modal */}
-            <Dialog open={paymentModalOpen} onClose={() => setPaymentModalOpen(false)} className="relative z-10">
-        <div className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" />
-        <div className="fixed inset-0 z-10 overflow-y-auto">
-          <div className="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
-            <Dialog.Panel className="relative transform overflow-hidden rounded-lg bg-white px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-sm sm:p-6">
-              {paymentStatus === 'initial' && (
-                <div>
-  <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-green-100">
-    <CreditCardIcon className="h-6 w-6 text-green-600" aria-hidden="true" />
-  </div>
-  <div className="mt-4 text-center">
-    <Dialog.Title as="h3" className="text-lg font-semibold leading-6 text-gray-900">
-      Secure Your Spot with £1 Deposit
-    </Dialog.Title>
-    <div className="mt-3">
-      <p className="text-sm text-gray-500">
-        Pay a fully refundable £1 deposit to reserve your place and get exclusive early access when we launch next month.
-      </p>
-    </div>
-  </div>
-  <form onSubmit={handlePaymentSubmit} className="mt-6 space-y-4">
-    <div>
-      <label htmlFor="card-number" className="sr-only">
-        Card number
-      </label>
-      <input
-        id="card-number"
-        name="card-number"
-        type="text"
-        placeholder="Card number"
-        value={cardNumber}
-        onChange={(e) => setCardNumber(e.target.value)}
-        className="block w-full rounded-md border-0 py-2 px-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-      />
-    </div>
-    <div className="flex space-x-4">
-      <div className="flex-1">
-        <label htmlFor="card-expiration-date" className="sr-only">
-          Expiration date
-        </label>
-        <input
-          id="card-expiration-date"
-          name="card-expiration-date"
-          type="text"
-          placeholder="MM / YY"
-          value={expiryDate}
-          onChange={(e) => setExpiryDate(e.target.value)}
-          className="block w-full rounded-md border-0 py-2 px-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-        />
-      </div>
-      <div className="flex-1">
-        <label htmlFor="card-cvc" className="sr-only">
-          CVC
-        </label>
-        <input
-          id="card-cvc"
-          name="card-cvc"
-          type="text"
-          placeholder="CVC"
-          value={cvc}
-          onChange={(e) => setCvc(e.target.value)}
-          className="block w-full rounded-md border-0 py-2 px-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-        />
-      </div>
-    </div>
-    <button
-      type="submit"
-      className="mt-2 inline-flex w-full justify-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-    >
-      Pay £1 Deposit
-    </button>
-  </form>
-</div>
-              )}
-              {paymentStatus === 'loading' && (
-                <div className="flex flex-col items-center justify-center">
-                  <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-indigo-500"></div>
-                  <p className="mt-4 text-lg font-semibold">Processing your payment...</p>
+            <Dialog open={true} onClose={() => {}} className="relative z-10">
+      <div className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" />
+      <div className="fixed inset-0 z-10 overflow-y-auto">
+        <div className="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
+          <Dialog.Panel className="relative transform overflow-hidden rounded-lg bg-white px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-sm sm:p-6">
+            {paymentStatus === 'initial' && (
+              <div>
+                <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-green-100">
+                  <CreditCardIcon className="h-6 w-6 text-green-600" aria-hidden="true" />
                 </div>
-              )}
-              {paymentStatus === 'error' && (
-                <div className="flex flex-col items-center justify-center">
-                  <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-green-100">
-                    <CheckCircleIcon className="h-6 w-6 text-white-600" aria-hidden="true" />
+                <div className="mt-4 text-center">
+                  <Dialog.Title as="h3" className="text-lg font-semibold leading-6 text-gray-900">
+                    Secure Your Spot with £1 Deposit
+                  </Dialog.Title>
+                  <div className="mt-3">
+                    <p className="text-sm text-gray-500">
+                      Pay a fully refundable £1 deposit to reserve your place and get exclusive early access when we launch next month.
+                    </p>
                   </div>
-                  <h3 className="mt-3 text-lg font-semibold text-gray-900">Congratulations!</h3>
-                  <p className="mt-2 text-sm text-center text-gray-500">
-                    Your place has been secured - no payment was taken.
-                  </p>
-                  <p className="mt-4 text-sm text-gray-500">
-                    You will be redirected to the next step shortly...
-                  </p>
                 </div>
-              )}
-            </Dialog.Panel>
-          </div>
+                <form onSubmit={handlePaymentSubmit} className="mt-6 space-y-4">
+                  <div>
+                    <label htmlFor="card-number" className="sr-only">
+                      Card number
+                    </label>
+                    <Cleave
+                      id="card-number"
+                      name="card-number"
+                      placeholder="Card number"
+                      options={{ creditCard: true }}
+                      value={cardNumber}
+                      onChange={(e) => setCardNumber(e.target.value)}
+                      className="block w-full rounded-md py-2 px-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm"
+                    />
+                  </div>
+                  <div className="flex space-x-4">
+                    <div className="flex-1">
+                      <label htmlFor="card-expiration-date" className="sr-only">
+                        Expiration date
+                      </label>
+                      <Cleave
+                        id="card-expiration-date"
+                        name="card-expiration-date"
+                        placeholder="MM / YY"
+                        options={{ date: true, datePattern: ['m', 'y'] }}
+                        value={expiryDate}
+                        onChange={(e) => setExpiryDate(e.target.value)}
+                        className="block w-full rounded-md py-2 px-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm"
+                      />
+                    </div>
+                    <div className="flex-1">
+                      <label htmlFor="card-cvc" className="sr-only">
+                        CVC
+                      </label>
+                      <Cleave
+                        id="card-cvc"
+                        name="card-cvc"
+                        placeholder="CVC"
+                        options={{ blocks: [3], numericOnly: true }}
+                        value={cvc}
+                        onChange={(e) => setCvc(e.target.value)}
+                        className="block w-full rounded-md py-2 px-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm"
+                      />
+                    </div>
+                  </div>
+                  <button
+                    type="submit"
+                    className="mt-2 inline-flex w-full justify-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                  >
+                    Pay £1 Deposit
+                  </button>
+                </form>
+              </div>
+            )}
+            {paymentStatus === 'loading' && (
+              <div className="flex flex-col items-center justify-center">
+                <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-indigo-500"></div>
+                <p className="mt-4 text-lg font-semibold">Processing your payment...</p>
+              </div>
+            )}
+            {paymentStatus === 'error' && (
+              <div className="flex flex-col items-center justify-center">
+                <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-green-100">
+                  <CheckCircleIcon className="h-6 w-6 text-white-600" aria-hidden="true" />
+                </div>
+                <h3 className="mt-3 text-lg font-semibold text-gray-900">Congratulations!</h3>
+                <p className="mt-2 text-sm text-center text-gray-500">
+                  Your place has been secured - no payment was taken.
+                </p>
+                <p className="mt-4 text-sm text-gray-500">
+                  You will be redirected to the next step shortly...
+                </p>
+              </div>
+            )}
+          </Dialog.Panel>
         </div>
-      </Dialog>
-
+      </div>
+    </Dialog>
+    
       {/* Modal for secondary form (optional feedback) */}
       <Dialog open={open} onClose={() => setOpen(false)} className="relative z-10">
   <div className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true" />
@@ -592,7 +588,8 @@ function App() {
       </div>
     </div>
   </div>
-</Dialog>              </div>
+</Dialog>             
+ </div>
 </div>
 
           </div>
