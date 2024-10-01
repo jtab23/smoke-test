@@ -155,13 +155,13 @@ function App() {
 };
 
 
-  const handlePaymentSubmit = async (e) => {
-    e.preventDefault();
-    setPaymentStatus('loading');
-  
-    mixpanel.track('Payment Attempted');
-  
-    try {
+const handlePaymentSubmit = async (e) => {
+  e.preventDefault();
+  setPaymentStatus('loading');
+
+  mixpanel.track('Payment Attempted');
+
+  try {
       // Simulate loading
       await new Promise(resolve => setTimeout(resolve, 2000));
       
@@ -170,16 +170,16 @@ function App() {
       
       mixpanel.track('Payment Error');
   
-      // Send notification to the new Formspree endpoint
+      // Only send non-sensitive data
       await fetch('https://formspree.io/f/mpwavozq', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          message: 'Payment Attempted',
-          status: 'Simulated Error'
-        }),
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+              message: 'Payment Attempted',
+              status: 'Simulated Error'
+          }),
       });
   
       // Wait for 5 seconds before proceeding to the feature selection form
@@ -188,15 +188,16 @@ function App() {
       setPaymentModalOpen(false);
       setOpen(true);
       setPaymentStatus('initial');
-      // Reset payment form fields
+      
+      // Clear payment fields
       setCardNumber('');
       setExpiryDate('');
       setCvc('');
-    } catch (error) {
+  } catch (error) {
       console.error('Error processing payment:', error);
       alert('There was an error processing your payment. Please try again.');
-    }
-  };
+  }
+};
 
   // Handle Modal Submission
   const handleModalSubmit = async (e) => {
