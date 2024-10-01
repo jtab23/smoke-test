@@ -126,33 +126,33 @@ function App() {
   
     mixpanel.track('Email Submitted', { email: email });
   
-  try {
-    // Submit email to Formspree
-    const response = await fetch('https://formspree.io/f/manwzzkv', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        email: email,
-        message: 'Waitlist email submitted',
-      }),
-    });
+    try {
+      // Submit email to Formspree
+      const response = await fetch('https://formspree.io/f/manwzzkv', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: email,
+          message: 'Waitlist email submitted',
+        }),
+      });
 
-    if (!response.ok) {
-      throw new Error('Formspree submission failed');
+      if (!response.ok) {
+        throw new Error('Formspree submission failed');
+      }
+
+      await new Promise((resolve) => setTimeout(resolve, 1000)); // Simulate delay for UX
+      setPaymentModalOpen(true); // Only set to true after successful submission
+      setEmail('');
+    } catch (error) {
+      console.error('Error submitting email form:', error);
+      alert('There was an error submitting your email. Please try again.');
+    } finally {
+      setIsSubmitting(false);
     }
-
-    await new Promise((resolve) => setTimeout(resolve, 1000)); // Simulate delay for UX
-    setPaymentModalOpen(true);
-    setEmail('');
-  } catch (error) {
-    console.error('Error submitting email form:', error);
-    alert('There was an error submitting your email. Please try again.');
-  } finally {
-    setIsSubmitting(false);
-  }
-};
+  };
 
 
 const handlePaymentSubmit = async (e) => {
