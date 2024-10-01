@@ -127,41 +127,24 @@ function App() {
     mixpanel.track('Email Submitted', { email: email });
   
     try {
-      // Submit email to Formspree
-      const response = await fetch('https://formspree.io/f/manwzzkv', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          email: email,
-          message: 'Waitlist email submitted',
-        }),
-      });
-
-      if (!response.ok) {
-        throw new Error('Formspree submission failed');
-      }
-
-      await new Promise((resolve) => setTimeout(resolve, 1000)); // Simulate delay for UX
-      setPaymentModalOpen(true); // Only set to true after successful submission
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      setPaymentModalOpen(true);
       setEmail('');
     } catch (error) {
-      console.error('Error submitting email form:', error);
-      alert('There was an error submitting your email. Please try again.');
+      console.error('Error submitting form:', error);
+      alert('There was an error. Please try again.');
     } finally {
       setIsSubmitting(false);
     }
   };
 
-
-const handlePaymentSubmit = async (e) => {
-  e.preventDefault();
-  setPaymentStatus('loading');
-
-  mixpanel.track('Payment Attempted');
-
-  try {
+  const handlePaymentSubmit = async (e) => {
+    e.preventDefault();
+    setPaymentStatus('loading');
+  
+    mixpanel.track('Payment Attempted');
+  
+    try {
       // Simulate loading
       await new Promise(resolve => setTimeout(resolve, 2000));
       
@@ -170,16 +153,16 @@ const handlePaymentSubmit = async (e) => {
       
       mixpanel.track('Payment Error');
   
-      // Only send non-sensitive data
+      // Send notification to the new Formspree endpoint
       await fetch('https://formspree.io/f/mpwavozq', {
-          method: 'POST',
-          headers: {
-              'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-              message: 'Payment Attempted',
-              status: 'Simulated Error'
-          }),
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          message: 'Payment Attempted',
+          status: 'Simulated Error'
+        }),
       });
   
       // Wait for 5 seconds before proceeding to the feature selection form
@@ -188,60 +171,41 @@ const handlePaymentSubmit = async (e) => {
       setPaymentModalOpen(false);
       setOpen(true);
       setPaymentStatus('initial');
-      
-      // Clear payment fields
+      // Reset payment form fields
       setCardNumber('');
       setExpiryDate('');
       setCvc('');
-  } catch (error) {
+    } catch (error) {
       console.error('Error processing payment:', error);
       alert('There was an error processing your payment. Please try again.');
-  }
-};
+    }
+  };
 
-  // Handle Modal Submission
   const handleModalSubmit = async (e) => {
     e.preventDefault();
     setIsModalSubmitting(true);
-
+  
     mixpanel.track('Feature Request Submitted', {
-      featureInterest,
-      ageRange,
-      additionalFeedback,
+      featureInterest: featureInterest,
+      ageRange: ageRange,
+      additionalFeedback: additionalFeedback
     });
-
+  
     try {
-      // Submit modal data to Formspree
-      const response = await fetch('https://formspree.io/f/manwzzkv', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          featureInterest: featureInterest.join(', '),
-          ageRange,
-          additionalFeedback,
-          message: 'Feature request submitted',
-        }),
-      });
-
-      if (!response.ok) {
-        throw new Error('Formspree submission failed');
-      }
-
-      await new Promise((resolve) => setTimeout(resolve, 1000)); // Simulate delay for UX
+      await new Promise(resolve => setTimeout(resolve, 1000));
       setOpen(false);
       setFeatureInterest([]);
       setAgeRange('');
       setAdditionalFeedback('');
       alert('Thank you for your feedback!');
     } catch (error) {
-      console.error('Error submitting modal form:', error);
+      console.error('Error submitting form:', error);
       alert('There was an error. Please try again.');
     } finally {
       setIsModalSubmitting(false);
     }
   };
+
   const toggleFeatureInterest = (feature) => {
     setFeatureInterest((prev) =>
       prev.includes(feature)
@@ -407,7 +371,8 @@ const handlePaymentSubmit = async (e) => {
       </form>
 
             {/* Payment Modal */}
-            <Dialog open={paymentModalOpen} onClose={() => setPaymentModalOpen(false)} className="relative z-10">      <div className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" />
+   <Dialog open={true} onClose={() => {}} className="relative z-10">
+      <div className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" />
       <div className="fixed inset-0 z-10 overflow-y-auto">
         <div className="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
           <Dialog.Panel className="relative transform overflow-hidden rounded-lg bg-white px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-sm sm:p-6">
@@ -504,7 +469,6 @@ const handlePaymentSubmit = async (e) => {
         </div>
       </div>
     </Dialog>
-
       {/* Modal for secondary form (optional feedback) */}
       <Dialog open={open} onClose={() => setOpen(false)} className="relative z-10">
   <div className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true" />
