@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Dialog } from '@headlessui/react';
+import { motion } from 'framer-motion';  // Import Framer Motion
 import { Bars3Icon, XMarkIcon, BellIcon, CreditCardIcon, CheckCircleIcon } from '@heroicons/react/24/outline';
 import mixpanel from 'mixpanel-browser';
 import Cleave from 'cleave.js/react';
@@ -354,7 +355,17 @@ const handlePaymentSubmit = async (e) => {
             </div>
             <div className="text-center">
             <h1 className="text-4xl font-bold tracking-tight text-white sm:text-6xl">
-                ible AHHHHHHHH Rent Payments for a <span className="italic underline decoration-green-500 decoration-5">Fairer</span> Future
+                <motion.span
+                  className="relative"
+                  // Framer Motion "wobble" effect when page loads
+                  animate={{ scale: [1, 1.2, 1], rotate: [0, 10, -10, 0] }}
+                  transition={{ duration: 1, repeat: Infinity, repeatType: "reverse" }}
+                >
+                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-green-500">
+                    Flex
+                  </span>
+                </motion.span>
+                ible Rent Payments for a <span className="italic underline decoration-green-500 decoration-5">Fairer</span> Future
               </h1>
   <p className="mt-6 text-lg leading-8 text-gray-200 max-w-2xl mx-auto">
     <span className="text-white font-semibold">FlexMyRent</span> is designed for tenants who need 
