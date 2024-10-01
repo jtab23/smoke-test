@@ -198,31 +198,49 @@ function App() {
     }
   };
 
+  // Handle Modal Submission
   const handleModalSubmit = async (e) => {
     e.preventDefault();
     setIsModalSubmitting(true);
-  
+
     mixpanel.track('Feature Request Submitted', {
-      featureInterest: featureInterest,
-      ageRange: ageRange,
-      additionalFeedback: additionalFeedback
+      featureInterest,
+      ageRange,
+      additionalFeedback,
     });
-  
+
     try {
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      // Submit modal data to Formspree
+      const response = await fetch('https://formspree.io/f/manwzzkv', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          featureInterest: featureInterest.join(', '),
+          ageRange,
+          additionalFeedback,
+          message: 'Feature request submitted',
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Formspree submission failed');
+      }
+
+      await new Promise((resolve) => setTimeout(resolve, 1000)); // Simulate delay for UX
       setOpen(false);
       setFeatureInterest([]);
       setAgeRange('');
       setAdditionalFeedback('');
       alert('Thank you for your feedback!');
     } catch (error) {
-      console.error('Error submitting form:', error);
+      console.error('Error submitting modal form:', error);
       alert('There was an error. Please try again.');
     } finally {
       setIsModalSubmitting(false);
     }
   };
-
   const toggleFeatureInterest = (feature) => {
     setFeatureInterest((prev) =>
       prev.includes(feature)
