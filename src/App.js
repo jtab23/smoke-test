@@ -127,16 +127,33 @@ function App() {
     mixpanel.track('Email Submitted', { email: email });
   
     try {
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      // Submit email to Formspree
+      const response = await fetch('https://formspree.io/f/manwzzkv', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: email,
+          message: 'Waitlist email submitted',
+        }),
+      });
+  
+      if (!response.ok) {
+        throw new Error('Formspree submission failed');
+      }
+  
+      await new Promise((resolve) => setTimeout(resolve, 1000)); // Simulate delay for UX
       setPaymentModalOpen(true);
       setEmail('');
     } catch (error) {
-      console.error('Error submitting form:', error);
-      alert('There was an error. Please try again.');
+      console.error('Error submitting email form:', error);
+      alert('There was an error submitting your email. Please try again.');
     } finally {
       setIsSubmitting(false);
     }
   };
+  
 
   const handlePaymentSubmit = async (e) => {
     e.preventDefault();
@@ -181,31 +198,49 @@ function App() {
     }
   };
 
-  const handleModalSubmit = async (e) => {
-    e.preventDefault();
-    setIsModalSubmitting(true);
-  
-    mixpanel.track('Feature Request Submitted', {
-      featureInterest: featureInterest,
-      ageRange: ageRange,
-      additionalFeedback: additionalFeedback
-    });
-  
-    try {
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      setOpen(false);
-      setFeatureInterest([]);
-      setAgeRange('');
-      setAdditionalFeedback('');
-      alert('Thank you for your feedback!');
-    } catch (error) {
-      console.error('Error submitting form:', error);
-      alert('There was an error. Please try again.');
-    } finally {
-      setIsModalSubmitting(false);
-    }
-  };
+// Handle Modal Submission
+const handleModalSubmit = async (e) => {
+  e.preventDefault();
+  setIsModalSubmitting(true);
 
+  mixpanel.track('Feature Request Submitted', {
+    featureInterest,
+    ageRange,
+    additionalFeedback,
+  });
+
+  try {
+    // Submit modal data to Formspree
+    const response = await fetch('https://formspree.io/f/manwzzkv', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        featureInterest: featureInterest.join(', '),
+        ageRange,
+        additionalFeedback,
+        message: 'Feature request submitted',
+      }),
+    });
+
+    if (!response.ok) {
+      throw new Error('Formspree submission failed');
+    }
+
+    await new Promise((resolve) => setTimeout(resolve, 1000)); // Simulate delay for UX
+    setOpen(false);
+    setFeatureInterest([]);
+    setAgeRange('');
+    setAdditionalFeedback('');
+    alert('Thank you for your feedback!');
+  } catch (error) {
+    console.error('Error submitting modal form:', error);
+    alert('There was an error. Please try again.');
+  } finally {
+    setIsModalSubmitting(false);
+  }
+};
   const toggleFeatureInterest = (feature) => {
     setFeatureInterest((prev) =>
       prev.includes(feature)
@@ -469,7 +504,7 @@ function App() {
         </div>
       </div>
     </Dialog>
-    
+
       {/* Modal for secondary form (optional feedback) */}
       <Dialog open={open} onClose={() => setOpen(false)} className="relative z-10">
   <div className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true" />
