@@ -257,14 +257,14 @@ const handlePaymentSubmit = async (e) => {
         <nav className="flex items-center justify-between p-6 lg:px-8" aria-label="Global">
           <div className="flex items-center lg:flex-1">
             <a href="#" className="-m-1.5 p-1.5 flex items-center">
-              <span className="sr-only">FlugixYourRent</span>
+              <span className="sr-only">FlexYourRent</span>
               <img
                 className="h-8 w-auto"
                 src="https://tailwindui.com/img/logos/mark.svg?color=green&shade=500"
                 alt="FlexMyRent Logo"
               />
               
-              <span className="ml-2 text-xl font-bold text-white">FluxYourRent</span>
+              <span className="ml-2 text-xl font-bold text-white">FlexYourRent</span>
 
             </a>
           </div>
@@ -365,7 +365,7 @@ const handlePaymentSubmit = async (e) => {
                     Flex
                   </span>
                 </motion.span>
-                ible Rent Payments for a <span className="italic underline decoration-green-500 decoration-5">Fairer</span> Future
+                ible AHHHHHHHH Rent Payments for a <span className="italic underline decoration-green-500 decoration-5">Fairer</span> Future
               </h1>
   <p className="mt-6 text-lg leading-8 text-gray-200 max-w-2xl mx-auto">
     <span className="text-white font-semibold">FlexMyRent</span> is designed for tenants who need 
